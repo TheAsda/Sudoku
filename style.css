@@ -1,0 +1,35 @@
+body{
+    background-color: black;
+}
+
+.grid{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 320px;
+    height: 320px;
+    justify-content: space-between;
+    align-content:space-between;
+}
+
+.gridl{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width:100px;
+    height: 100px;
+    justify-content: space-between;
+    align-content: space-between;
+}
+
+.cell{
+    width: 25px;
+    height: 25px;
+    background-color:white;
+    text-align: center;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
