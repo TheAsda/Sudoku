@@ -1,7 +1,7 @@
 body {
-  background-color: white;
+  background-color: #dedee0;
   width: 100vw;
-  height: 100vw;
+  height: 100vh;
 }
 
 .grid {
@@ -27,7 +27,7 @@ body {
 }
 
 .cell {
-  padding: 1.6px;
+  padding: 1px;
   width: 50px;
   height: 50px;
   background-color: #eaeef4;

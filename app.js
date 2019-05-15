@@ -31,20 +31,26 @@ window.onload = () => {
       if (cur) cur.classList.remove("current");
     }
   });
-  for (let i = 0; i < 10; i++) {
+  fill();
+};
+
+function setCurrent(cell) {
+  let cur = document.getElementsByClassName("current")[0];
+  if (cur) cur.classList.remove("current");
+  if (cell) cell.classList.add("current");
+}
+
+function fill() {
+  for (let i = 0; i < 15; i++) {
     let randomRow = Math.floor(Math.random() * 9);
     let randomCol = Math.floor(Math.random() * 9);
     let cell = document.getElementById("c_" + randomRow + "_" + randomCol);
     do {
       cell.value = Math.round(Math.random() * 9);
     } while (validate(cell) !== true);
+    cell.classList.add("disabled");
+    cell.classList.remove("current");
   }
-};
-
-function setCurrent(cell) {
-  let cur = document.getElementsByClassName("current")[0];
-  if (cur) cur.classList.remove("current");
-  cell.classList.add("current");
 }
 
 function checkEndGame(cell) {
@@ -70,6 +76,8 @@ function checkEndGame(cell) {
       document.getElementById("death").classList.remove("visible");
       document.getElementById("death").classList.add("invisible");
       document.getElementById("grid").classList.add("fadeIn");
+      fill();
+      setCurrent();
     }
   }
 }
