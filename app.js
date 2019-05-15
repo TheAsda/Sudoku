@@ -26,7 +26,6 @@ window.onload = () => {
   }
   document.getElementsByTagName("body")[0].addEventListener("click", event => {
     if (isInside(event, document.getElementById("grid")) == false) {
-      console.log("Out of grid");
       let cur = document.getElementsByClassName("current")[0];
       if (cur) cur.classList.remove("current");
     }
@@ -41,7 +40,7 @@ function setCurrent(cell) {
 }
 
 function fill() {
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 30; i++) {
     let randomRow = Math.floor(Math.random() * 9);
     let randomCol = Math.floor(Math.random() * 9);
     let cell = document.getElementById("c_" + randomRow + "_" + randomCol);
@@ -55,7 +54,6 @@ function fill() {
 
 function checkEndGame(cell) {
   if (validate(cell) === true) {
-    console.log("Continue");
     cell.classList.add("disabled");
     cell.classList.remove("current");
   } else {
@@ -78,6 +76,7 @@ function checkEndGame(cell) {
       document.getElementById("grid").classList.add("fadeIn");
       fill();
       setCurrent();
+      document.removeEventListener("keypress",restore);
     }
   }
 }
