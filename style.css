@@ -1,35 +1,99 @@
-body{
-    background-color: black;
+body {
+  background-color: white;
+  width: 100vw;
+  height: 100vw;
 }
 
-.grid{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 320px;
-    height: 320px;
-    justify-content: space-between;
-    align-content:space-between;
+.grid {
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 528px;
+  height: 528px;
+  justify-content: space-between;
+  align-content: space-between;
 }
 
-.gridl{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width:100px;
-    height: 100px;
-    justify-content: space-between;
-    align-content: space-between;
+.gridl {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 170px;
+  height: 170px;
+  justify-content: space-around;
+  align-content: space-around;
+  border-style: solid;
+  border-width: 3px;
+  border-color: #99989d;
 }
 
-.cell{
-    width: 25px;
-    height: 25px;
-    background-color:white;
-    text-align: center;
+.cell {
+  padding: 1.6px;
+  width: 50px;
+  height: 50px;
+  background-color: #eaeef4;
+  text-align: center;
+  font-size: 50px;
+  border-style: none;
+  color: transparent;
+  text-shadow: 0 0 0 #15141b;
+  border-radius: 5px;
 }
 input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button{
-    -webkit-appearance: none;
-    margin: 0;
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.death {
+  width: 520px;
+  height: 520px;
+}
+
+.visible {
+  display: flex;
+}
+
+.invisible {
+  display: none;
+}
+
+.fadeIn {
+  animation-name: fadeIn;
+  animation-duration: 2.5s;
+  animation-timing-function: ease-in-out;
+
+  visibility: visible !important;
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.disabled {
+  pointer-events: none;
+  background-color: #e1e4ec;
+}
+
+.current {
+  background-color: #fffeff;
+  animation-name: scaleUp;
+  animation-duration: 0.4s;
+  animation-timing-function: ease-in-out;
+  transform: scale(1.2);
+}
+
+@keyframes scaleUp {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.2);
+  }
 }
