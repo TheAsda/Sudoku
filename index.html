@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="app.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
-<body>
-    <div id="grid" class="grid visible">
+  </head>
+  <body>
+    <div class="diffArea">
+      <p>Difficulty</p>
+      <input type="range" min="0" max="50" id="difficulty" value="25" step="5" class="diffRange" />
+      <input type="number" class="diffText" id="diffValue" />
+      <button onclick="fill()" class="diffButton">Reset</button>
     </div>
-    <img src="death.jpg" class="death invisible" id="death">
-</body>
+    <div id="grid" class="grid visible"></div>
+    <img src="death.jpg" class="death invisible" id="death" />
+  </body>
 </html>

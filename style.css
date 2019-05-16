@@ -45,8 +45,8 @@ input::-webkit-inner-spin-button {
 }
 
 .death {
-  width: 520px;
-  height: 520px;
+  width: 528px;
+  height: 529px;
 }
 
 .visible {
@@ -96,4 +96,44 @@ input::-webkit-inner-spin-button {
   100% {
     transform: scale(1.2);
   }
+}
+
+.diffArea {
+  display: flex;
+  width: 528px;
+}
+
+.diffButton {
+  width: 70px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #eaeef4;
+  font-size: 18px;
+  text-align: center;
+}
+
+.diffRange {
+  height: 30px;
+  width: 300px;
+  flex-grow: 1;
+}
+
+.diffText {
+  height: 30px;
+  width: 30px;
+  pointer-events: none;
+  text-align: center;
+  border-radius: 5px;
+  color: transparent;
+  text-shadow: 0 0 0 #15141b;
+  font-size: 20px;
+  padding: 0;
+  border-width: 0;
+  background-color: #dedee0;
+}
+
+p{
+  font-size: 20px;
+  margin: 0;
+  margin-top: 5px;
 }
