@@ -1,23 +1,23 @@
 let audio = new Audio();
+let valid;
 window.onload = () => {
-  audio.pause();
   audio.src = 'death.mp3';
   document.getElementById('diffValue').value = document.getElementById('difficulty').value;
   document.getElementById('difficulty').addEventListener('change', function() {
     document.getElementById('diffValue').value = this.value;
   });
+  //Grid generation
   for (let i = 0; i < 9; i++) {
     let gridl = document.createElement('div');
     gridl.setAttribute('class', 'gridl');
     for (let j = 0; j < 9; j++) {
       let id = 'c_' + parseInt(j / 3 + parseInt(i / 3) * 3).toString() + '_' + parseInt((j % 3) + (i % 3) * 3).toString();
-
       let cell = document.createElement('input');
       cell.setAttribute('id', id);
       cell.setAttribute('type', 'number');
       cell.setAttribute('class', 'cell');
-      cell.setAttribute('onchange', 'checkEndGame(this)');
       cell.setAttribute('onclick', 'setCurrent(this)');
+      cell.setAttribute('onchange', 'checkEndGame(this)');
       gridl.appendChild(cell);
     }
     document.getElementById('grid').appendChild(gridl);
@@ -37,8 +37,96 @@ function setCurrent(cell) {
   if (cell) cell.classList.add('current');
 }
 
-function fill() {
-  resetGrid();
+function fill(f) {
+  if (f === true) resetGrid();
+  const grid = generateGrid();
+  const diff = document.getElementById('difficulty').value;
+  let picked = [];
+  for (let i = 0; i < diff; i++) {
+    let row;
+    let col;
+    do {
+      row = Math.floor(Math.random() * 9);
+      col = Math.floor(Math.random() * 9);
+    } while (picked.includes(row.toString() + col));
+    picked.push(row.toString() + col);
+    const id = 'c_' + row + '_' + col;
+    const cell = document.getElementById(id);
+    cell.value = grid[row][col];
+    cell.classList.add('disabled');
+  }
+  valid = new validation(grid);
+}
+
+function checkEndGame(cell) {
+  console.log('Check');
+  if (valid.isValid(cell) === true) {
+    cell.removeAttribute('onchange', 'checkEndGame(this)');
+    cell.classList.add('disabled');
+    cell.classList.remove('current');
+  } else {
+    document.getElementById('grid').classList.remove('visible');
+    document.getElementById('grid').classList.add('invisible');
+    document.getElementById('death').classList.remove('invisible');
+    document.getElementById('death').classList.add('visible');
+    document.getElementById('death').classList.add('fadeIn');
+    audio.play();
+    document.addEventListener('keypress', restore);
+    function restore() {
+      audio.pause();
+      audio.currentTime = 0;
+      document.getElementById('grid').classList.remove('invisible');
+      document.getElementById('grid').classList.add('visible');
+      document.getElementById('grid').classList.add('fadeIn');
+      document.getElementById('death').classList.remove('visible');
+      document.getElementById('death').classList.add('invisible');
+      document.getElementById('grid').classList.add('fadeIn');
+      resetGrid();
+      fill();
+      setCurrent();
+      document.removeEventListener('keypress', restore);
+    }
+  }
+}
+
+function validation(grid) {
+  this.grid = grid;
+}
+
+validation.prototype.isValid = function(cell) {
+  if (cell.value > 0 && cell.value < 10) {
+    const id = cell.id;
+    let pos = id.replace('c_', '').split('_');
+    if (cell.value != this.grid[pos[0]][pos[1]]) return false;
+    else return true;
+  } else {
+    cell.removeAttribute('onchange', 'checkEndGame(this)');
+    cell.value = '';
+    cell.setAttribute('onchange', 'checkEndGame(this)');
+  }
+};
+
+function resetGrid() {
+  let grid = document.getElementById('grid').childNodes;
+  for (let i = 0; i < grid.length; i++) {
+    let gridl = grid[i].childNodes;
+    for (let j = 0; j < gridl.length; j++) {
+      if (gridl[j].hasAttribute('onchange')) gridl[j].removeAttribute('onchange', 'checkEndGame(this)');
+      gridl[j].value = '';
+      gridl[j].classList.remove('disabled');
+      gridl[j].setAttribute('onchange', 'checkEndGame(this)');
+    }
+  }
+}
+
+function isInside(e) {
+  var x = e.offsetX == undefined ? e.layerX : e.offsetX;
+  var y = e.offsetY == undefined ? e.layerY : e.offsetY;
+  if (x > 550 || y > 550) return false;
+  else return true;
+}
+
+function generateGrid() {
   let grid = new Array(9);
   for (let i = 0; i < 9; i++) {
     grid[i] = new Array(9);
@@ -79,19 +167,7 @@ function fill() {
         break;
     }
   }
-  let diff = document.getElementById('difficulty').value;
-  console.log('Difficulty: ' + diff);
-  let picked = [];
-  for (let i = 0; i < diff; i++) {
-    let row;
-    let col;
-    do {
-      row = Math.floor(Math.random() * 9);
-      col = Math.floor(Math.random() * 9);
-    } while (picked.includes(row.toString() + col));
-    picked.push(row.toString() + col);
-    document.getElementById('c_' + row + '_' + col).value = grid[row][col];
-  }
+  return grid;
 
   function swapRowsS() {
     let row1 = Math.floor(Math.random() * 3);
@@ -149,82 +225,4 @@ function fill() {
       }
     }
   }
-}
-
-function checkEndGame(cell) {
-  if (validate(cell) === true) {
-    cell.classList.add('disabled');
-    cell.classList.remove('current');
-  } else {
-    document.getElementById('grid').classList.remove('visible');
-    document.getElementById('grid').classList.add('invisible');
-    document.getElementById('death').classList.remove('invisible');
-    document.getElementById('death').classList.add('visible');
-    document.getElementById('death').classList.add('fadeIn');
-    audio.play();
-    document.addEventListener('keypress', restore);
-    function restore() {
-      audio.pause();
-      audio.currentTime = 0;
-      document.getElementById('grid').classList.remove('invisible');
-      document.getElementById('grid').classList.add('visible');
-      document.getElementById('grid').classList.add('fadeIn');
-      document.getElementById('death').classList.remove('visible');
-      document.getElementById('death').classList.add('invisible');
-      document.getElementById('grid').classList.add('fadeIn');
-      fill();
-      setCurrent();
-      document.removeEventListener('keypress', restore);
-    }
-  }
-}
-
-function validate(cell) {
-  if (cell.value > 0 && cell.value < 10) {
-    const id = cell.id;
-    const position = id.replace('c_', '').split('_');
-    const row = [];
-    const col = [];
-    gridl = cell.parentElement;
-    const cells = gridl.childNodes;
-    for (let i = 0; i < cells.length; i++) {
-      if (cells[i] == cell) continue;
-      if (cells[i].value == cell.value) {
-        return false;
-      }
-    }
-
-    for (let i = 0; i < 9; i++) {
-      let rowValue;
-      if (i != position[1]) rowValue = document.getElementById('c_' + position[0] + '_' + i).value;
-      let colValue;
-      if (i != position[0]) colValue = document.getElementById('c_' + i + '_' + position[1]).value;
-      if (rowValue != '' && rowValue != undefined) row.push(rowValue);
-      if (colValue != '' && colValue != undefined) col.push(colValue);
-    }
-    if (row.indexOf(cell.value) != -1 || col.indexOf(cell.value) != -1) {
-      return false;
-    }
-    return true;
-  } else {
-    cell.value = '';
-  }
-}
-
-function resetGrid() {
-  let grid = document.getElementById('grid').childNodes;
-  for (let i = 0; i < grid.length; i++) {
-    let gridl = grid[i].childNodes;
-    for (let j = 0; j < gridl.length; j++) {
-      gridl[j].value = '';
-      gridl[j].classList.remove('disabled');
-    }
-  }
-}
-
-function isInside(e) {
-  var x = e.offsetX == undefined ? e.layerX : e.offsetX;
-  var y = e.offsetY == undefined ? e.layerY : e.offsetY;
-  if (x > 550 || y > 550) return false;
-  else return true;
 }
